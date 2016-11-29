@@ -20,7 +20,6 @@
 </head>
   <body>
     <div class="wrapper">
-        <%@include file="nav.jsp"%>
         <div class="form-signin">
             <p><h1>验证成功</h1></p>
         </div>
