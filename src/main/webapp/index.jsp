@@ -14,7 +14,7 @@
           "captchaId": "6b144233421749dabd8f5081f792040f", // 自动切换测试
           "width": 320
         }
-        new NECaptchaInit(document.getElementById('captcha_div'), opts);
+        new NECaptcha(document.getElementById('captcha_div'), opts);
     </script>
   </body>
 </html>
