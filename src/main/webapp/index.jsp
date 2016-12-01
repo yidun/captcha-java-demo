@@ -45,7 +45,7 @@
         "captchaId": "YOUR_CAPTCHA_ID", // 验证码id
         "width": 320
       }
-      var instance = new NECaptcha(opts);
+      var instance = necaptcha(opts);
   </script>
 </body>
 </html>

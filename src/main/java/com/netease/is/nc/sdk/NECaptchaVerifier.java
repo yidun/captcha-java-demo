@@ -21,7 +21,6 @@ public class NECaptchaVerifier {
     public static final String REQ_VALIDATE = "NECaptchaValidate"; // 二次验证带过来的validate
 
     private static final String VERSION = "v1";
-    private static final String LANG = "java";
     private String captchaId = ""; // 验证码id
     private NESecretPair secretPair = null; // 密钥对
 
