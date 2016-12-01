@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by captcha_dev on 16-9-29.
  */
 public class NECaptchaVerifier {
-    public static final String VERIFY_API = "http://10.165.125.0:8181/api/v1/verify"; // verify接口地址
+    public static final String VERIFY_API = "http://c.dun.163yun.com/api/v1/verify"; // verify接口地址
     public static final String REQ_VALIDATE = "NECaptchaValidate"; // 二次验证带过来的validate
 
     private static final String VERSION = "v1";

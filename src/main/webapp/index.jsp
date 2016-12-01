@@ -38,13 +38,11 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit-btn">登录</button>
     </form>
   </div>
-  <script src="http://nctest-server.nis.netease.com/js/c.js"></script>
+  <script src="http://c.dun.163yun.com/js/c.js"></script>
   <script>
       var opts = {
         "element": "captcha_div",
-        "staticServer": "nctest-server.nis.netease.com",
-        "apiServer": "nctest-server.nis.netease.com",
-        "captchaId": "6b144233421749dabd8f5081f792040f",
+        "captchaId": "YOUR_CAPTCHA_ID", // 验证码id
         "width": 320
       }
       var instance = new NECaptcha(opts);

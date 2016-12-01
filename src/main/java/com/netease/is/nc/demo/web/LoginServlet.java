@@ -14,9 +14,9 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = -3185301474503659058L;
-    private static final String captchaId = "6b144233421749dabd8f5081f792040f"; // 验证码id
-    private static final String secretId = "00461255961a4143acd1bde096c6cbfe"; // 密钥对id
-    private static final String secretKey = "f493a769b52a4cada27d31eb10e60d97"; // 密钥对key
+    private static final String captchaId = "YOUR_CAPTCHA_ID"; // 验证码id
+    private static final String secretId = "YOUR_SECRET_ID"; // 密钥对id
+    private static final String secretKey = "YOUR_SECRET_KEY"; // 密钥对key
 
     private final NECaptchaVerifier verifier = new NECaptchaVerifier(captchaId, new NESecretPair(secretId, secretKey));
 
