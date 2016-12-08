@@ -21,7 +21,7 @@
   <body>
     <div class="wrapper">
         <div class="form-signin">
-            <p><h1>验证失败</h1></p>
+            <p><h1>验证失败 <a href="/">返回首页</a></h1></p>
         </div>
     </div>
   </body>
