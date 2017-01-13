@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>易盾验证码-DEMO</title>
     <!-- 演示用js/css，非组件依赖 -->
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
