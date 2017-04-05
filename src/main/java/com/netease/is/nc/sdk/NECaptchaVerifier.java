@@ -41,7 +41,7 @@ public class NECaptchaVerifier {
      * @return
      */
     public boolean verify(String validate, String user) {
-        if (StringUtils.isEmpty(validate)) {
+        if (StringUtils.isEmpty(validate) || StringUtils.equals(validate, "null")) {
             return false;
         }
         user = (user == null) ? "" : user; // bugfix:如果user为null会出现签名错误的问题
