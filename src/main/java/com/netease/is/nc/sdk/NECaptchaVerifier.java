@@ -44,6 +44,7 @@ public class NECaptchaVerifier {
         if (StringUtils.isEmpty(validate)) {
             return false;
         }
+        user = (user == null) ? "" : user; // bugfix:如果user为null会出现签名错误的问题
         Map<String, String> params = new HashMap<String, String>();
         params.put("captchaId", captchaId);
         params.put("validate", validate);
