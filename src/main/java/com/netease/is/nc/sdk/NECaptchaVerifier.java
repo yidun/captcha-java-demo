@@ -17,10 +17,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by captcha_dev on 16-9-29.
  */
 public class NECaptchaVerifier {
-    public static final String VERIFY_API = "http://c.dun.163yun.com/api/v1/verify"; // verify接口地址
+    public static final String VERIFY_API = "http://c.dun.163yun.com/api/v2/verify"; // verify接口地址
     public static final String REQ_VALIDATE = "NECaptchaValidate"; // 二次验证带过来的validate
 
-    private static final String VERSION = "v1";
+    private static final String VERSION = "v2";
     private String captchaId = ""; // 验证码id
     private NESecretPair secretPair = null; // 密钥对
 

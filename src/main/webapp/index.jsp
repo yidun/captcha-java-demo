@@ -13,21 +13,20 @@
     <input type="text" class="form-control" name="username" placeholder="账号" />
     <input type="password" class="form-control" name="password" placeholder="密码" />
     <div style="margin: 10px auto;" id="captcha_div"></div> <!-- 验证码容器元素定义 -->
-    <button class="btn btn-lg btn-primary btn-block" type="submit" disabled="disabled" id="submit-btn">登录</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit-btn">登录</button>
 </form>
-<script src="//c.dun.163yun.com/js/c.js"></script><!-- 验证码组件js -->
+<script src="http://cstaticdun.126.net/load.min.js"></script>
 <script> // 验证码组件初始化
-      var opts = {
-        "element": "captcha_div", // 可以是验证码容器id，也可以是HTMLElement
-        "captchaId": "YOUR_CAPTCHA_ID", // 这里填入申请到的验证码id
-        "width": 320, // 验证码组件显示宽度
-        "verifyCallback": function(ret){ // 用户只要有拖动/点击，就会触发这个回调
-          if(ret['value']){ // true:验证通过 false:验证失败
-            $("#submit-btn").removeAttr("disabled"); // 用户完成拖动之后再启用提交按钮
-          }
-        }
-      }
-      new NECaptcha(opts);
+      initNECaptcha({
+          captchaId: 'YOUR_CAPTCHA_ID',
+          element: '#captcha_div',
+          mode: 'float',
+          width: '320px'
+      }, function (instance) {
+          // 初始化成功后得到验证实例instance，可以调用实例的方法
+      }, function (err) {
+          // 初始化失败后触发该函数，err对象描述当前错误信息
+      })
   </script>
 </body>
 </html>
