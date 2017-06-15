@@ -21,7 +21,12 @@
           captchaId: 'YOUR_CAPTCHA_ID',
           element: '#captcha_div',
           mode: 'float',
-          width: '320px'
+          width: '320px',
+          onVerify: function(err, ret){
+            if(!err){
+                // ret['validate'] 获取二次校验数据
+            }
+          }
       }, function (instance) {
           // 初始化成功后得到验证实例instance，可以调用实例的方法
       }, function (err) {
