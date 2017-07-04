@@ -1,7 +1,7 @@
 package com.netease.is.nc.sdk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.is.nc.sdk.utils.HttpClient4Utils;
+import com.netease.is.nc.sdk.utils.HttpClientUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -58,7 +58,7 @@ public class NECaptchaVerifier {
         String signature = sign(secretPair.secretKey, params);
         params.put("signature", signature);
 
-        String resp = HttpClient4Utils.sendPost(VERIFY_API, params);
+        String resp = HttpClientUtils.sendPost(VERIFY_API, params);
         System.out.println("resp = " + resp);
         return verifyRet(resp);
     }
