@@ -17,7 +17,7 @@
 <script src="http://cstaticdun.126.net/load.min.js"></script>
 <script> // 验证码组件初始化
       initNECaptcha({
-          captchaId: 'YOUR_CAPTCHA_ID',
+          captchaId: 'a05f036b70ab447b87cc788af9a60974',
           element: '#captcha_div',
           mode: 'float',
           width: '320px',
