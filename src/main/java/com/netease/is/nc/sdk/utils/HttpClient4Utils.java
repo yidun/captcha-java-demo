@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * HttpClient工具类
@@ -45,14 +46,48 @@ public class HttpClient4Utils {
      */
     public static HttpClient createHttpClient(int maxTotal, int maxPerRoute, int socketTimeout, int connectTimeout,
                                               int connectionRequestTimeout) {
-        RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(socketTimeout)
-                .setConnectTimeout(connectTimeout).setConnectionRequestTimeout(connectionRequestTimeout).build();
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
+                .setSocketTimeout(socketTimeout)
+                .setConnectTimeout(connectTimeout)
+                .setConnectionRequestTimeout(connectionRequestTimeout).build();
+
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         cm.setMaxTotal(maxTotal);
         cm.setDefaultMaxPerRoute(maxPerRoute);
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm)
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(cm)
+                .setConnectionTimeToLive(30, TimeUnit.SECONDS)
                 .setDefaultRequestConfig(defaultRequestConfig).build();
+
+        startMonitorThread(cm);
+
         return httpClient;
+    }
+
+    /**
+     * 增加定时任务, 每隔一段时间清理连接
+     *
+     * @param cm
+     */
+    private static void startMonitorThread(final PoolingHttpClientConnectionManager cm) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        cm.closeExpiredConnections();
+                        cm.closeIdleConnections(30, TimeUnit.SECONDS);
+
+                        // log.info("closing expired & idle connections, stat={}", cm.getTotalStats());
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (Exception e) {
+                        // ignore exceptoin
+                    }
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     /**
@@ -99,8 +134,9 @@ public class HttpClient4Utils {
 
     /**
      * 发送post请求
-     * @param url        请求地址
-     * @param params     请求参数
+     *
+     * @param url    请求地址
+     * @param params 请求参数
      * @return
      */
     public static String sendPost(String url, Map<String, String> params) {
