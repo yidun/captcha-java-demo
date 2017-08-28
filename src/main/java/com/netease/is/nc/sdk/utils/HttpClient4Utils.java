@@ -13,6 +13,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.StandardHttpRequestRetryHandler;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -54,9 +55,11 @@ public class HttpClient4Utils {
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         cm.setMaxTotal(maxTotal);
         cm.setDefaultMaxPerRoute(maxPerRoute);
+        cm.setValidateAfterInactivity(200); // 一个连接idle超过200ms,再次被使用之前,需要先做validation
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(cm)
                 .setConnectionTimeToLive(30, TimeUnit.SECONDS)
+                .setRetryHandler(new StandardHttpRequestRetryHandler(3, true)) // 配置出错重试
                 .setDefaultRequestConfig(defaultRequestConfig).build();
 
         startMonitorThread(cm);
