@@ -16,7 +16,7 @@
     <div style="margin: 10px auto;" id="captcha_div"></div> <!-- 验证码容器元素定义 -->
     <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit-btn">登录</button>
 </form>
-<script src="http://cstaticdun.126.net/load.min.js"></script>
+<script src="//cstaticdun.126.net/load.min.js"></script>
 <script> // 验证码组件初始化
       initNECaptcha({
           captchaId: 'YOUR_CAPTCHA_ID',
