@@ -15,6 +15,32 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <!-- 转发接口配置 -->
+    <servlet>
+        <servlet-name>ForwardServlet</servlet-name>
+        <display-name>ForwardServlet</display-name>
+        <servlet-class>com.netease.is.nc.demo.web.ForwardApiServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForwardServlet</servlet-name>
+        <url-pattern>/api/v2/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- 转发静态资源配置 -->
+    <servlet>
+        <servlet-name>ForwardStaticServlet</servlet-name>
+        <display-name>ForwardStaticServlet</display-name>
+        <servlet-class>com.netease.is.nc.demo.web.ForwardStaticServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForwardStaticServlet</servlet-name>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

@@ -20,6 +20,8 @@
 <script> // 验证码组件初始化
       initNECaptcha({
           captchaId: 'YOUR_CAPTCHA_ID',
+          apiServer: 'localhost:8181',
+          staticServer: 'localhost:8181',
           element: '#captcha_div',
           mode: 'float',
           width: '320px',
