@@ -45,7 +45,7 @@ public class HttpClient4Utils {
      * @param connectionRequestTimeout
      * @return
      */
-    public static HttpClient createHttpClient(int maxTotal, int maxPerRoute, int socketTimeout, int connectTimeout,
+    public static CloseableHttpClient createHttpClient(int maxTotal, int maxPerRoute, int socketTimeout, int connectTimeout,
                                               int connectionRequestTimeout) {
         RequestConfig defaultRequestConfig = RequestConfig.custom()
                 .setSocketTimeout(socketTimeout)
