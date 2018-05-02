@@ -21,7 +21,7 @@
       initNECaptcha({
           captchaId: 'YOUR_CAPTCHA_ID',
           element: '#captcha_div',
-          mode: 'float',
+          mode: 'embed', // 如果要用触发式，这里改为float即可
           width: '320px',
           onVerify: function(err, ret){
             if(!err){
