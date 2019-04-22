@@ -1,11 +1,13 @@
 package com.netease.is.nc.sdk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.is.nc.sdk.utils.HttpClient4Utils;
+import com.netease.is.nc.sdk.entity.VerifyResult;
+import com.netease.is.nc.sdk.utils.HttpConnectionUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,9 +42,9 @@ public class NECaptchaVerifier {
      * @param user     用户
      * @return
      */
-    public boolean verify(String validate, String user) {
+    public VerifyResult verify(String validate, String user) {
         if (StringUtils.isEmpty(validate) || StringUtils.equals(validate, "null")) {
-            return false;
+            return VerifyResult.fakeNormalResult("validate data is empty");
         }
         user = (user == null) ? "" : user; // bugfix:如果user为null会出现签名错误的问题
         Map<String, String> params = new HashMap<String, String>();
@@ -57,8 +59,13 @@ public class NECaptchaVerifier {
         // 计算请求参数签名信息
         String signature = sign(secretPair.secretKey, params);
         params.put("signature", signature);
-
-        String resp = HttpClient4Utils.sendPost(VERIFY_API, params);
+        String resp = "";
+        try {
+            resp = HttpConnectionUtils.readContentFromPost(VERIFY_API, params);
+        } catch (IOException ex) {
+            System.out.println("http connect occur exception,please check !");
+            ex.printStackTrace();
+        }
         System.out.println("resp = " + resp);
         return verifyRet(resp);
     }
@@ -92,15 +99,15 @@ public class NECaptchaVerifier {
      * @param resp
      * @return
      */
-    private boolean verifyRet(String resp) {
+    private VerifyResult verifyRet(String resp) {
         if (StringUtils.isEmpty(resp)) {
-            return false;
+            return VerifyResult.fakeNormalResult(resp);
         }
         try {
-            JSONObject j = JSONObject.parseObject(resp);
-            return j.getBoolean("result");
+            VerifyResult verifyResult = JSONObject.parseObject(resp, VerifyResult.class);
+            return verifyResult;
         } catch (Exception e) {
-            return false;
+            return VerifyResult.fakeNormalResult(resp);
         }
     }
 }

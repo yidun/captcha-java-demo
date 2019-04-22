@@ -2,6 +2,7 @@ package com.netease.is.nc.demo.web;
 
 import com.netease.is.nc.sdk.NECaptchaVerifier;
 import com.netease.is.nc.sdk.NESecretPair;
+import com.netease.is.nc.sdk.entity.VerifyResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,15 +21,16 @@ public class LoginServlet extends HttpServlet {
 
     private final NECaptchaVerifier verifier = new NECaptchaVerifier(captchaId, new NESecretPair(secretId, secretKey));
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String validate = request.getParameter(NECaptchaVerifier.REQ_VALIDATE); // 从请求体里获得验证码validate数据
         String user = "{'id':'123456'}";
 
-        boolean isValid = verifier.verify(validate, user); // 发起二次校验
+        VerifyResult result = verifier.verify(validate, user); // 发起二次校验
 
-        System.out.println("validate = " + validate + ", isValid = " + isValid);
-        if (isValid) {
+        System.out.println(String.format("validate = %s,  isValid = %s , msg = %s ", validate, result.isResult(),
+                result.getMsg()));
+        if (result.isResult()) {
             response.sendRedirect("/success.jsp");
         } else {
             response.sendRedirect("/fail.jsp");
