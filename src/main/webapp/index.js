@@ -26,6 +26,9 @@
     'en': 'captcha error，Verified automatically'
   }
   var CACHE_MIN = 1000 * 60 // 缓存时长单位，1分钟
+  var REQUEST_SCRIPT_ERROR = 502
+
+  var RESOURCE_CACHE = {}
 
   // 工具函数
   function loadScript (src, cb) {
@@ -204,6 +207,13 @@
     step(0)
   }
 
+  /*
+   * entry: initNECaptchaWithFallback
+   * options: 
+   *  errorFallbackCount: 触发降级的错误次数，默认第三次错误降级
+   *  defaultFallback: 是否开启默认降级
+   *  onFallback: 自定义降级方案，参数为默认validate
+  */
   function initNECaptchaWithFallback (options, onload, onerror) {
     var captchaIns = null
 
@@ -258,21 +268,76 @@
       } catch (err) {}
     }
 
-    config.onError = proxyOnError
-    config.onDidRefresh = proxyRefresh
-
-    loadResource(config, function (error) {
-      if (error) {
-        proxyOnError(error)
-      } else {
-        window.initNECaptcha(config, function (instance) {
-          captchaIns = instance
-          onload && onload(instance)
-        }, noFallback ? onerror : function (error) {
-          proxyOnError(error)
-        })
+    var triggerInitError = function (error) {
+      if (initialTimer && initialTimer.isError()) {
+        initialTimer.resetError()
+        return
       }
-    })
+      initialTimer && initialTimer.resetTimer()
+      noFallback ? onerror(error) : proxyOnError(error)
+    }
+
+    config.onError = function (error) {
+      if (initialTimer && initialTimer.isError()) {
+        initialTimer.resetError()
+      }
+      proxyOnError(error)
+    }
+    config.onDidRefresh = function () {
+      if (initialTimer && initialTimer.isError()) {
+        initialTimer.resetError()
+      }
+      proxyRefresh()
+    }
+
+    var initialTimer = options.initTimeoutError ? options.initTimeoutError(proxyOnError) : null // initialTimer is only for mobile.html
+
+    var loadResolve = function () {
+      window.initNECaptcha(config, function (instance) {
+        if (initialTimer && initialTimer.isError()) return
+        initialTimer && initialTimer.resetTimer()
+        captchaIns = instance
+        onload && onload(instance)
+      }, triggerInitError)
+    }
+    var cacheId = 'load-queue'
+    if (!RESOURCE_CACHE[cacheId]) {
+      RESOURCE_CACHE[cacheId] = {
+        rejects: [],
+        resolves: [],
+        status: 'error'
+      }
+    }
+    if (RESOURCE_CACHE[cacheId].status === 'error') {
+      RESOURCE_CACHE[cacheId].status = 'pending'
+      loadResource(config, function (error) {
+        if (error) {
+          var err = new Error()
+          err.code = REQUEST_SCRIPT_ERROR
+          err.message = config.staticServer + '/load.min.js error'
+
+          var rejects = RESOURCE_CACHE[cacheId].rejects
+          for (var i = 0, iLen = rejects.length; i < iLen; i++) {
+            rejects.pop()(err)
+          }
+          RESOURCE_CACHE[cacheId].status = 'error'
+        } else {
+          RESOURCE_CACHE[cacheId].status = 'done'
+          var resolves = RESOURCE_CACHE[cacheId].resolves
+          for (var j = 0, jLen = resolves.length; j < jLen; j++) {
+            resolves.pop()()
+          }
+        }
+      })
+    } else if (RESOURCE_CACHE[cacheId].status === 'done') {
+      loadResolve()
+    }
+    if (RESOURCE_CACHE[cacheId].status === 'pending') {
+      RESOURCE_CACHE[cacheId].rejects.push(function loadReject (err) {
+        triggerInitError(err)
+      })
+      RESOURCE_CACHE[cacheId].resolves.push(loadResolve)
+    }
   }
 
   return initNECaptchaWithFallback
