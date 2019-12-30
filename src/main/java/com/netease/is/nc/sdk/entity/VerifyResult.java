@@ -80,9 +80,18 @@ public class VerifyResult {
         this.extraData = extraData;
     }
 
-    public static VerifyResult fakeNormalResult(String resp) {
+    public static VerifyResult fakeFalseResult(String resp) {
         VerifyResult result = new VerifyResult();
         result.setResult(false);
+        result.setError(0);
+        result.setMsg(resp);
+        result.setPhone("");
+        return result;
+    }
+
+    public static VerifyResult fakeTrueResult(String resp) {
+        VerifyResult result = new VerifyResult();
+        result.setResult(true);
         result.setError(0);
         result.setMsg(resp);
         result.setPhone("");

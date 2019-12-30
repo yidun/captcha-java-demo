@@ -44,7 +44,7 @@ public class NECaptchaVerifier {
      */
     public VerifyResult verify(String validate, String user) {
         if (StringUtils.isEmpty(validate) || StringUtils.equals(validate, "null")) {
-            return VerifyResult.fakeNormalResult("validate data is empty");
+            return VerifyResult.fakeFalseResult("validate data is empty");
         }
         user = (user == null) ? "" : user; // bugfix:如果user为null会出现签名错误的问题
         Map<String, String> params = new HashMap<String, String>();
@@ -94,20 +94,24 @@ public class NECaptchaVerifier {
     }
 
     /**
-     * 验证返回结果
+     * 验证返回结果<br>
+     * 1. 当易盾服务端出现异常或者返回异常时，优先使用返回true的结果，反之阻塞用户的后序操作<br>
+     * 2. 如果想修改为返回false结果。可以调用VerifyResult.fakeFalseResult(java.lang.String)函数
      *
      * @param resp
      * @return
      */
     private VerifyResult verifyRet(String resp) {
         if (StringUtils.isEmpty(resp)) {
-            return VerifyResult.fakeNormalResult(resp);
+            return VerifyResult.fakeTrueResult("return empty response");
         }
         try {
             VerifyResult verifyResult = JSONObject.parseObject(resp, VerifyResult.class);
             return verifyResult;
-        } catch (Exception e) {
-            return VerifyResult.fakeNormalResult(resp);
+        } catch (Exception ex) {
+            System.out.println("yidun captcha return error response ,please check!");
+            ex.printStackTrace();
+            return VerifyResult.fakeTrueResult(resp);
         }
     }
 }
