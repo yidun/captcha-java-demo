@@ -189,7 +189,7 @@
 
       return urls
     }
-    var urls = genUrl(config.staticServer || ['cstaticdun.126.net', 'cstatic.dun.163yun.com'])
+    var urls = genUrl(config.staticServer || ['cstaticdun.126.net', 'cstaticdun1.126.net', 'cstatic.dun.163yun.com'])
 
     function step (i) {
       var url = urls[i] + '?v=' + getTimestamp(CACHE_MIN)
