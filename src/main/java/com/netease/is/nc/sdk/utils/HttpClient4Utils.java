@@ -33,7 +33,10 @@ import java.util.concurrent.TimeUnit;
  * @version 2016年2月3日
  */
 public class HttpClient4Utils {
-    private static HttpClient defaultClient = createHttpClient(20, 20, 5000, 5000, 3000);
+    /**
+     *  默认maxTotal和maxPerRoute为100, 可根据服务并发量适当调整参数阈值
+     */
+    private static HttpClient defaultClient = createHttpClient(100, 100, 5000, 5000, 3000);
 
     /**
      * 实例化HttpClient
