@@ -174,7 +174,12 @@
   }
 
   function loadResource (config, cb) {
-    if (window.initNECaptcha) return cb(null)
+    if (window.initNECaptcha) {
+      setTimeout(function () {
+        cb(null)
+      }, 0)
+      return
+    }
     function genUrl (server) {
       var path = 'load.min.js'
       var urls = []
