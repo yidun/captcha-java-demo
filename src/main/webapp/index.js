@@ -194,7 +194,15 @@
 
       return urls
     }
-    var urls = genUrl(config.staticServer || ['cstaticdun.126.net', 'cstaticdun1.126.net', 'cstatic.dun.163yun.com'])
+    
+    const defaultStaticServer = config.ipv6 ? [
+      'cstaticdun-v6.126.net',
+      'cstatic.dun.163yun.com'
+    ] : [
+      'cstaticdun.126.net',
+      'cstatic.dun.163yun.com'
+    ]
+    var urls = genUrl(config.staticServer || defaultStaticServer)
 
     function step (i) {
       var url = urls[i] + '?v=' + getTimestamp(CACHE_MIN)
