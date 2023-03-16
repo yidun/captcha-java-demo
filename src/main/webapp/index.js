@@ -197,10 +197,10 @@
     
     const defaultStaticServer = config.ipv6 ? [
       'cstaticdun-v6.126.net',
-      'cstatic.dun.163yun.com'
+      'cstaticdun1.126.net'
     ] : [
       'cstaticdun.126.net',
-      'cstatic.dun.163yun.com'
+      'cstaticdun1.126.net'
     ]
     var urls = genUrl(config.staticServer || defaultStaticServer)
 
