@@ -197,7 +197,7 @@
     
     const defaultStaticServer = config.ipv6 ? [
       'cstaticdun-v6.126.net',
-      'cstaticdun1.126.net'
+      'cstaticdun.126.net'
     ] : [
       'cstaticdun.126.net',
       'cstaticdun1.126.net'
